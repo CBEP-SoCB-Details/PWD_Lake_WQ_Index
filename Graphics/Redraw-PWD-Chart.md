@@ -16,8 +16,7 @@ Curtis C. Bohlen, Casco Bay Estuary Partnership
       - [Modify the Long Form Data](#modify-the-long-form-data)
       - [Revised Color Palette](#revised-color-palette)
       - [Coding the Revised Graphic](#coding-the-revised-graphic)
-  - [Revised (horizontal) version of the
-    graphic](#revised-horizontal-version-of-the-graphic)
+  - [Revised (Horizontal) Graphic](#revised-horizontal-graphic)
 
 <img
   src="https://www.cascobayestuary.org/wp-content/uploads/2014/04/logo_sm.jpg"
@@ -157,7 +156,7 @@ plt +
   scale_fill_manual(values =altcolors)
 ```
 
-<img src="Redraw-PWD-Chart_files/figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="Redraw-PWD-Chart_files/figure-gfm/graphic_no_totals-1.png" style="display: block; margin: auto;" />
 
 ``` r
 ggsave('figures/redraw_PWD_table.pdf', device=cairo_pdf, width = 4, height = 7)
@@ -165,9 +164,9 @@ ggsave('figures/redraw_PWD_table.pdf', device=cairo_pdf, width = 4, height = 7)
 
 # Revised Version with Totals Column
 
-But we need to show the totals column, which needs a different color
-scheme. We would also like to be able to add an annotation marker to
-totals calculated with partial data.
+We need to show the totals column, which needs a different color scheme.
+We would also like to be able to add an annotation marker to totals
+calculated with partial data.
 
 ## Modify the Long Form Data
 
@@ -212,7 +211,7 @@ levels(pwd_long_totals$color_scheme)
 
 ``` r
 altcolors_2 <- brewer.pal(9, "GnBu")[3:7] 
-altcolors_2[6] <- 'seashell2'
+altcolors_2[6] <- 'lightyellow2'
 altcolors_2[7] <- cbep_colors2()[1]
 ```
 
@@ -247,20 +246,30 @@ plt2 +
 #> Warning: Removed 7 rows containing missing values (geom_text).
 ```
 
-<img src="Redraw-PWD-Chart_files/figure-gfm/unnamed-chunk-14-1.png" style="display: block; margin: auto;" />
+<img src="Redraw-PWD-Chart_files/figure-gfm/graphic_totals-1.png" style="display: block; margin: auto;" />
 
 ``` r
 ggsave('figures/redraw_PWD_table_totals.pdf', device=cairo_pdf, width = 4, height = 7)
 #> Warning: Removed 7 rows containing missing values (geom_text).
 ```
 
-# Revised (horizontal) version of the graphic
+# Revised (Horizontal) Graphic
 
 ``` r
-plt3 <- ggplot(pwd_long_totals, aes(Lake, Column)) +
+# reorder factors so teh totals appear ont he bottom
+pwd_long_totals_2 <- pwd_long_totals %>%
+  mutate(Column = factor(Column, levels = c( 'Total Score',
+                                             'Existing WQ',
+                                             'WQ Trend',
+                                             'Existing Land Cover',
+                                             'Land Cover Trend')))
+
+plt3 <- ggplot(pwd_long_totals_2, aes(Lake, Column)) +
   geom_raster(aes(fill = color_scheme))  +
   geom_text(aes(label = Value, color = Value)) +
   
+  # If you want to show the "ID" label on boxes where there was 
+  # insufficient data, change the second color here.
   scale_color_manual(values = c(rep('black', length(pwd_long_totals$color_scheme)-1),
                                 cbep_colors2()[1])) +
  
@@ -269,19 +278,21 @@ plt3 <- ggplot(pwd_long_totals, aes(Lake, Column)) +
   ylab('') +
   xlab('') +
     
-  coord_fixed(1) +
+  coord_fixed(.75) +
   theme_cbep(base_size = 12) +
   theme(legend.position = 'none') +
-  theme(axis.text.x = element_text(angle = 45, hjust = 0, size = 8)) +
-  theme(plot.margin = unit(c(.5,4,.5,.5), 'lines')) +
+  theme(axis.text.x = element_text(angle = -45, hjust = 1, size = 8)) +
+ #theme(plot.margin = unit(c(.5,4,.5,.5), 'lines')) +
   scale_x_discrete(position = "top")
+```
 
+``` r
 plt3 +
   scale_fill_manual(values = altcolors_2)
 #> Warning: Removed 7 rows containing missing values (geom_text).
 ```
 
-<img src="Redraw-PWD-Chart_files/figure-gfm/unnamed-chunk-15-1.png" style="display: block; margin: auto;" />
+<img src="Redraw-PWD-Chart_files/figure-gfm/graphic_totals_horizontal-1.png" style="display: block; margin: auto;" />
 
 ``` r
 ggsave('figures/redraw_PWD_table_horizontal.pdf', device=cairo_pdf, width = 7, height = 4)
