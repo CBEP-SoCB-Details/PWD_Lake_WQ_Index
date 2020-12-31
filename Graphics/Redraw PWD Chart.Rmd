@@ -165,9 +165,9 @@ pwd_long_totals <- pwd_data %>%
                                                         "Total", "ID")),
          color_scheme = replace_na(color_scheme, 'ID')) %>%
   
-  # Finally, we add asterisks to some "total" values
-  mutate( Value = as.character(Value),
-         Value = if_else(Column == 'Total Score' & has_na,
+  # Finally, we add asterisks to some "total" values, in case we want them
+  mutate(Value = as.character(Value),
+         value_star = if_else(Column == 'Total Score' & has_na,
                          paste0(Value, '*'),
                          Value))
 ```
@@ -217,7 +217,7 @@ ggsave('figures/redraw_PWD_table_totals.pdf', device=cairo_pdf, width = 4, heigh
 
 # Revised (Horizontal) Graphic
 ```{r}
-# reorder factors so teh totals appear ont he bottom
+# reorder factors so the totals appear on the bottom
 pwd_long_totals_2 <- pwd_long_totals %>%
   mutate(Column = factor(Column, levels = c( 'Total Score',
                                              'Existing WQ',
