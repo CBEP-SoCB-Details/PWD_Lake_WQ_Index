@@ -102,7 +102,7 @@ The LakeLines paper mentions tend analysis based on the “Mann-Kendall”
 test. Mann-Kendall test has several other names, and is closely related
 to the Thiel- Sen estimator of slope. Crucially, it produces a test
 statistic, known as Kendall’s Tau, which ranges from -1 to +1, and is a
-nonparameteric equivalent to the standard (Pearson) correlation
+nonparametric equivalent to the standard (Pearson) correlation
 coefficient. Kendall’s Tau is widely used in environmental data analysis
 because it is insensitive to monotonic transformations, and is thus
 considered “nonparametric”.
@@ -120,7 +120,7 @@ same.)
 PWD papers refer to a number of analytic filters they used to decide
 what data to include in their analyses. We do not have access to their
 raw data, and thus can not duplicate all of their analytic choices. IN
-partiocular, they imposed various data completeness standards that we
+particular, they imposed various data completeness standards that we
 can not readily reconstruct.
 
 Because we do not know exactly how data was prepared for the PWD
@@ -484,7 +484,7 @@ of rate of change of water quality per year, probably calculated with a
 Theil-Sen slope estimator ( or one of its variants) on raw Chlorophyll
 concentrations.
 
-(The Thiel-Sen estimators are closely related to the Mann-Kendall Test
+(The Theil-Sen estimators are closely related to the Mann-Kendall Test
 mentioned in the LakeLines publication).
 
 If this is correct, then
@@ -500,7 +500,7 @@ If this is correct, then
 ## Why don’t results match exactly?
 
 PWD worked with DEP to develop a data set of summer time data which is
-not available to us. IN prepating that data set, DEP and PWD apparently
+not available to us. In preparing that data set, DEP and PWD apparently
 applied a number of analytic choices, such as data filters, which we do
 not fully understand, and thus can not replicate. Instead, we worked
 with a different DEP data set that should be similar, but not idetical
