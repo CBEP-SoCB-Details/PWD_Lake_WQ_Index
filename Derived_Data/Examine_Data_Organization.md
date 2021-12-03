@@ -53,10 +53,10 @@ Exploring the Source Data File
 
 # Broad Outline of the Index
 
-The Core Senbago Lake Subwatershed Index is built from information
-addressing only FOUR subcomponents Each of those four values is given a
+The Core Sebago Lake Subwatershed Index is built from information
+addressing only FOUR subcomponents. Each of those four values is given a
 score from one to five, which are summed to give an overall condition
-index. The compoinents are as follows:
+index. The components are as follows:
 
   - Current Water Quality – “Average Secchi transparency over the most
     recent 10+ Years”.
@@ -172,7 +172,7 @@ the list of lakes we enter below. Includes two charts.
 Provides summaries of trends for the 25 core lakes, including narrative
 grouping of trends, scores, number of “observations” and “coefficients”.
 It is not clear if “observations” refer to individual readings or years,
-but numbers are under 50, and match “Yeas of record” in the WQ4 tab.
+but numbers are under 50, and match “Years of record” in the WQ4 tab.
 Slopes are presented as “coefficients”. Units not expressed.
 
 ### “WQ 3 Trend criteria”
@@ -186,9 +186,9 @@ data on the “green trend”. Slightly more clearly labeled.
 
 ### “WQ 5 Trend chart”
 
-In addition to the chart, includes slopes, with units changes. A
+In addition to the chart, it includes slopes, with units changes. A
 “coefficient” of 0.10 on the previous sheets becomes a “Coefficient”
-here of 10%. Percentage of what? Page includes P values and 1-p value
+here of 10%. Percentage of what? (What did you mean by this?) Page includes P values and 1-p value
 (unlabeled) for regressions, absent on other sheets.
 
 ### “WQ Trend Chart for PP”
@@ -197,8 +197,7 @@ Similar Data.
 
 ### “Final Fact Sheet Scores”
 
-Includes final scores and sums, on color-coded grid. Multiple copies
-Multiple copies, apparently all with similar data.
+Includes final scores and sums, on color-coded grid. Multiple copies, apparently all with similar data.
 
 ### “FINAL SCORES horizontal”
 
@@ -226,7 +225,7 @@ Existing Land Use Final Scores.
 
 Includes data for land use observations (% green; 1997-2018), land use
 trend, expressed in a few different units, and the WQ trend (slope).
-Includes a couple of charts. Dos not shoe time to reach 76%
+Includes a couple of charts. Does not show time to reach 76%
 
 ### “LAND workbook”
 
@@ -239,7 +238,7 @@ a not very close relationship).
 Includes Green trend scores (**using an alternate percent lost per
 century statistic**), plus trend line slope, change (green to developed)
 over 31 year record (calculated from slope) and approximate percent
-forse4t lost at that rate over 100 years.
+forest lost at that rate over 100 years.
 
 ### “LAND Forest lost per century”
 
@@ -251,7 +250,7 @@ Only includes the trend line slopes.
 
 ### “LAND all 2018 data”
 
-Raw LANSDAT data and some related analyses. Columns with cryptic headers
+Raw LANDSAT data and some related analyses. Columns with cryptic headers
 that appear to refer to LANDSAT categories of some sort:
 
   - C\_18\_C  
@@ -323,7 +322,7 @@ better presented.
 
 ### “LAND for GIS EXISTING 2018”
 
-Simple table of Perent Green in 2018 for 25 selected lakes.
+Simple table of Percent Green in 2018 for 25 selected lakes.
 
 ### “LAND LANDSAT descript”
 
@@ -378,7 +377,7 @@ which lakes have sufficient data to analyze.
     
       - “Percent Green” values for multiple years, along with “Green
         Trend” and “Percent change Per century” values are available on
-        the “LAND percent cover by year” worksheet. Similar databut with
+        the “LAND percent cover by year” worksheet. Similar data but with
         the “Years to 76%” data added are available in “LAND trend minus
         cloudy subw”.
     
@@ -401,7 +400,7 @@ Kendall-Mann test. But Kendall-Mann test does not produce a slope, but
 Kendall’s Tau, which is a robust relative of the correlation
 coefficient, with a range of -1 to 1. It is likely that the
 “Coefficients” listed in the Excel Spreadsheets and discussed in the
-Powerpoint are Kendall’s tau.
+Powerpoint are Kendall’s Tau.
 
 As the transformation from Secchi Depth to TSI (or from Chlorophyll a to
 TSI) is monotonic, the value of Kendall’s Tau should be unaffected by
