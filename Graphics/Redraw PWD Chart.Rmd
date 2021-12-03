@@ -62,13 +62,41 @@ pwd_data <- read_excel(fpath, sheet = sel_sheet,
                        range = 'a1:h26', na = c('ID')) %>%
   select(-...7) %>%
   rename(MIDAS = `MIDAS #`,
-         Lake = `Lake Name` ) %>%
+         Lake = `Lake Name` )
+```
+
+## Adjust Lake names
+We want to convert names to title case. A method using `gsub()` does the trick.
+The basic idea is from a stackoverflow question here:
+https://stackoverflow.com/questions/6364783/capitalize-the-first-letter-of-both-words-in-a-two-word-string
+```{r}
+simple_cap <- function(x) {
+  gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", tolower(x), perl=TRUE)
+}
+
+simple_cap('Bananas are DELICIOUS')
+
+simple_cap(pwd_data$Lake[1:2])
+```
+
+```{r}
+pwd_data <- pwd_data %>%
+  mutate(Lake = simple_cap(Lake))
+```
+
+Now we edit problematic names
+```{r}
+pwd_data$Lake[pwd_data$MIDAS == 3424] <- 'Little Moose Pond'
+pwd_data$Lake[pwd_data$MIDAS == 3188] <- 'Foster Pond'
+```
+
+```{r} 
+pwd_data <- pwd_data %>%
   mutate(Lake = fct_reorder(Lake, `Total Score`))
 ```
 
 # Create "Long" Data for Plotting
 ```{r}
-
 pwd_long <- pwd_data %>%
   pivot_longer(cols = 3:6,
                names_to = 'Column',

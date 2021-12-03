@@ -3,20 +3,21 @@ Redraw a Graphic Chart for PWD Analysis Results
 Curtis C. Bohlen, Casco Bay Estuary Partnership
 12/19/2020
 
-  - [Introduction](#introduction)
-  - [Load Libraries](#load-libraries)
-  - [Folder References](#folder-references)
-  - [Load PWD Water Quality Trend
+-   [Introduction](#introduction)
+-   [Load Libraries](#load-libraries)
+-   [Folder References](#folder-references)
+-   [Load PWD Water Quality Trend
     Data](#load-pwd-water-quality-trend-data)
-  - [Create “Long” Data for Plotting](#create-long-data-for-plotting)
-  - [Create Candidate Color Schemes](#create-candidate-color-schemes)
-  - [Initial Graphic](#initial-graphic)
-  - [Revised Version with Totals
+    -   [Adjust Lake names](#adjust-lake-names)
+-   [Create “Long” Data for Plotting](#create-long-data-for-plotting)
+-   [Create Candidate Color Schemes](#create-candidate-color-schemes)
+-   [Initial Graphic](#initial-graphic)
+-   [Revised Version with Totals
     Column](#revised-version-with-totals-column)
-      - [Modify the Long Form Data](#modify-the-long-form-data)
-      - [Revised Color Palette](#revised-color-palette)
-      - [Coding the Revised Graphic](#coding-the-revised-graphic)
-  - [Revised (Horizontal) Graphic](#revised-horizontal-graphic)
+    -   [Modify the Long Form Data](#modify-the-long-form-data)
+    -   [Revised Color Palette](#revised-color-palette)
+    -   [Coding the Revised Graphic](#coding-the-revised-graphic)
+-   [Revised (Horizontal) Graphic](#revised-horizontal-graphic)
 
 <img
   src="https://www.cascobayestuary.org/wp-content/uploads/2014/04/logo_sm.jpg"
@@ -30,11 +31,15 @@ In this notebook, we
 
 ``` r
 library(tidyverse)
-#> -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-#> v ggplot2 3.3.2     v purrr   0.3.4
-#> v tibble  3.0.4     v dplyr   1.0.2
-#> v tidyr   1.1.2     v stringr 1.4.0
-#> v readr   1.4.0     v forcats 0.5.0
+#> Warning: package 'tidyverse' was built under R version 4.0.5
+#> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+#> v ggplot2 3.3.3     v purrr   0.3.4
+#> v tibble  3.1.2     v dplyr   1.0.6
+#> v tidyr   1.1.3     v stringr 1.4.0
+#> v readr   1.4.0     v forcats 0.5.1
+#> Warning: package 'tidyr' was built under R version 4.0.5
+#> Warning: package 'dplyr' was built under R version 4.0.5
+#> Warning: package 'forcats' was built under R version 4.0.5
 #> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
@@ -79,16 +84,49 @@ pwd_data <- read_excel(fpath, sheet = sel_sheet,
                        range = 'a1:h26', na = c('ID')) %>%
   select(-...7) %>%
   rename(MIDAS = `MIDAS #`,
-         Lake = `Lake Name` ) %>%
-  mutate(Lake = fct_reorder(Lake, `Total Score`))
+         Lake = `Lake Name` )
 #> New names:
 #> * `` -> ...7
+```
+
+## Adjust Lake names
+
+We want to convert names to title case. A method using `gsub()` does the
+trick. The basic idea is from a stackoverflow question here:
+<https://stackoverflow.com/questions/6364783/capitalize-the-first-letter-of-both-words-in-a-two-word-string>
+
+``` r
+simple_cap <- function(x) {
+  gsub("(^|[[:space:]])([[:alpha:]])", "\\1\\U\\2", tolower(x), perl=TRUE)
+}
+
+simple_cap('Bananas are DELICIOUS')
+#> [1] "Bananas Are Delicious"
+
+simple_cap(pwd_data$Lake[1:2])
+#> [1] "Moose Pond"   "Peabody Pond"
+```
+
+``` r
+pwd_data <- pwd_data %>%
+  mutate(Lake = simple_cap(Lake))
+```
+
+Now we edit problematic names
+
+``` r
+pwd_data$Lake[pwd_data$MIDAS == 3424] <- 'Little Moose Pond'
+pwd_data$Lake[pwd_data$MIDAS == 3188] <- 'Foster Pond'
+```
+
+``` r
+pwd_data <- pwd_data %>%
+  mutate(Lake = fct_reorder(Lake, `Total Score`))
 ```
 
 # Create “Long” Data for Plotting
 
 ``` r
-
 pwd_long <- pwd_data %>%
   pivot_longer(cols = 3:6,
                names_to = 'Column',
@@ -142,14 +180,14 @@ plt +
   scale_fill_manual(values = cbep_colors2()[6:1], name = '')
 ```
 
-<img src="Redraw-PWD-Chart_files/figure-gfm/unnamed-chunk-7-1.png" style="display: block; margin: auto;" />
+<img src="Redraw-PWD-Chart_files/figure-gfm/unnamed-chunk-11-1.png" style="display: block; margin: auto;" />
 
 ``` r
 plt +
   scale_fill_manual(values = mycolors) 
 ```
 
-<img src="Redraw-PWD-Chart_files/figure-gfm/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+<img src="Redraw-PWD-Chart_files/figure-gfm/unnamed-chunk-12-1.png" style="display: block; margin: auto;" />
 
 ``` r
 plt +
@@ -195,9 +233,9 @@ pwd_long_totals <- pwd_data %>%
                                                         "Total", "ID")),
          color_scheme = replace_na(color_scheme, 'ID')) %>%
   
-  # Finally, we add asterisks to some "total" values
-  mutate( Value = as.character(Value),
-         Value = if_else(Column == 'Total Score' & has_na,
+  # Finally, we add asterisks to some "total" values, in case we want them
+  mutate(Value = as.character(Value),
+         value_star = if_else(Column == 'Total Score' & has_na,
                          paste0(Value, '*'),
                          Value))
 ```
@@ -221,7 +259,6 @@ We continue to use text colors based on `color_scheme`, so we can hide
 the “ID” label if we choose.
 
 ``` r
-
 plt2 <- ggplot(pwd_long_totals, aes(Column, Lake)) +
   geom_raster(aes(fill = color_scheme))  +
   geom_text(aes(label = Value, color = Value)) +
@@ -256,7 +293,7 @@ ggsave('figures/redraw_PWD_table_totals.pdf', device=cairo_pdf, width = 4, heigh
 # Revised (Horizontal) Graphic
 
 ``` r
-# reorder factors so teh totals appear ont he bottom
+# reorder factors so the totals appear on the bottom
 pwd_long_totals_2 <- pwd_long_totals %>%
   mutate(Column = factor(Column, levels = c( 'Total Score',
                                              'Existing WQ',
