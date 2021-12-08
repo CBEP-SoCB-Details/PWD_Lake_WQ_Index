@@ -20,9 +20,9 @@ knitr::opts_chunk$set(fig.align = 'center',
  
 
 # Broad Outline of the Index
-The Core Senbago Lake Subwatershed Index is built from information addressing
+The Core Sebago Lake Subwatershed Index is built from information addressing
 only FOUR subcomponents  Each of those four values is given a score from one to
-five, which are summed to give an overall condition index.  The compoinents are
+five, which are summed to give an overall condition index.  The components are
 as follows:
 
 *  Current Water Quality -- "Average Secchi transparency over the most recent
@@ -110,7 +110,7 @@ of lakes we enter below.  Includes two charts.
 Provides summaries of trends for the 25 core lakes, including narrative grouping
 of trends, scores, number of "observations" and "coefficients".  It is not clear
 if "observations" refer to individual readings or years, but numbers
-are under 50, and match "Yeas of record" in the WQ4 tab. Slopes are presented as
+are under 50, and match "Years of record" in the WQ4 tab. Slopes are presented as
 "coefficients". Units not expressed.
 
 ### "WQ 3 Trend criteria"
@@ -121,10 +121,12 @@ Similar data to WQ2, organized slightly differently, and with additional data
 on the "green trend".  Slightly more clearly labeled.
 
 ### "WQ 5 Trend chart"
-In addition to the chart, includes slopes, with units changes.  A "coefficient"
-of 0.10 on the previous sheets becomes a "Coefficient" here of 10%. Percentage
-of what?  Page includes P values and 1-p value (unlabeled) for regressions,
-absent on other sheets.
+In addition to the chart, this worksheet includes slopes, but the with units 
+change.  A "coefficient" of 0.10 on the previous sheets becomes a "Coefficient" 
+here of 10%. (It is not clear why they expressed this as a percentage, as the
+slopes are expressed as change per year, some based on chlorophyll, some
+based on Secchi Depths.) Page includes P values and 1-p value (unlabeled) for
+regressions, absent on other sheets.
 
 ### "WQ Trend Chart for PP"
 Similar Data.
@@ -153,7 +155,7 @@ Existing Land Use Final Scores.
 ### " WQ and land correlation"
 Includes data for land use observations (% green; 1997-2018), land use
 trend, expressed in a few different units, and the WQ trend (slope). Includes
-a couple of charts. Dos not shoe time to reach 76%
+a couple of charts. Does not show time to reach 76%
 
 ### "LAND workbook"
 Similar data to the last worksheet, with some extra columns showing aggregate
@@ -164,7 +166,7 @@ relationship).
 Includes Green trend scores
 (**using an alternate  percent lost per century statistic**), plus
 trend line slope, change (green to developed) over 31 year record (calculated 
-from slope) and approximate percent forse4t lost at that rate over 100 years.
+from slope) and approximate percent forset lost at that rate over 100 years.
 
 ### "LAND Forest lost per century"
 Appears to be identical to the prior worksheet.
@@ -173,7 +175,7 @@ Appears to be identical to the prior worksheet.
 Only includes the trend line slopes.
 
 ### "LAND all 2018 data"
-Raw LANSDAT data and some related analyses.  Columns with cryptic headers that
+Raw LANDSAT data and some related analyses.  Columns with cryptic headers that
 appear to refer to LANDSAT categories of some sort:  
 
 *  C_18_C  
@@ -229,7 +231,7 @@ Similar to the previous worksheet, but with fewer data columns, slightly better
 presented.
 
 ### "LAND for GIS EXISTING 2018"
-Simple table of Perent Green in 2018 for 25 selected lakes.
+Simple table of PerCent Green in 2018 for 25 selected lakes.
 
 ### "LAND LANDSAT descript"
 
@@ -279,7 +281,7 @@ derived statistics.
 
     *  "Percent Green" values for multiple years, along with "Green Trend" and
     "Percent change Per century" values are available on the "LAND percent cover
-    by year" worksheet. Similar databut with the "Years to 76%" data added
+    by year" worksheet. Similar data but with the "Years to 76%" data added
     are available in "LAND trend minus cloudy subw".
     
     * Raw LANDSAT data are available in "LAND data all" or "Raw LANDSAT data"
@@ -298,7 +300,7 @@ The Publication discusses water quality trends in terms of a Kendall-Mann test.
 But Kendall-Mann test does not produce a slope, but Kendall's Tau, which is
 a robust relative of the correlation coefficient, with a range of -1 to 1.  It
 is likely that the "Coefficients" listed in the Excel Spreadsheets and discussed
-in the Powerpoint are Kendall's tau.
+in the Powerpoint are Kendall's Tau.
 
 As the transformation from Secchi Depth to TSI (or from Chlorophyll a to TSI)
 is monotonic, the value of Kendall's Tau should be unaffected by  shifting from
