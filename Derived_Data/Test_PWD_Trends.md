@@ -3,26 +3,26 @@ Confirm Methods for PWD Trend Analysis
 Curtis C. Bohlen, Casco Bay Estuary Partnership
 12/19/2020
 
-  - [Introduction](#introduction)
-      - [Derived Statistics in the Source Excel
+-   [Introduction](#introduction)
+    -   [Derived Statistics in the Source Excel
         File](#derived-statistics-in-the-source-excel-file)
-      - [Kendall’s Tau](#kendalls-tau)
-  - [Strategy](#strategy)
-  - [Load Libraries](#load-libraries)
-  - [Folder References](#folder-references)
-  - [Load PWD Water Quality Trend
+    -   [Kendall’s Tau](#kendalls-tau)
+-   [Strategy](#strategy)
+-   [Load Libraries](#load-libraries)
+-   [Folder References](#folder-references)
+-   [Load PWD Water Quality Trend
     Data](#load-pwd-water-quality-trend-data)
-  - [Load Maine Lakes Annual Data](#load-maine-lakes-annual-data)
-  - [Looking at Kendall’s Tau](#looking-at-kendalls-tau)
-  - [Looking at Slopes](#looking-at-slopes)
-      - [Linear Models](#linear-models)
-          - [Are Our Slopes Similar to PWD
+-   [Load Maine Lakes Annual Data](#load-maine-lakes-annual-data)
+-   [Looking at Kendall’s Tau](#looking-at-kendalls-tau)
+-   [Looking at Slopes](#looking-at-slopes)
+    -   [Linear Models](#linear-models)
+        -   [Are Our Slopes Similar to PWD
             Data?](#are-our-slopes-similar-to-pwd-data)
-      - [Theil-Sen Slope Estimators](#theil-sen-slope-estimators)
-          - [Are Our Slopes Similar to PWD
+    -   [Theil-Sen Slope Estimators](#theil-sen-slope-estimators)
+        -   [Are Our Slopes Similar to PWD
             Data?](#are-our-slopes-similar-to-pwd-data-1)
-  - [Commentary](#commentary)
-      - [Why don’t results match
+-   [Commentary](#commentary)
+    -   [Why don’t results match
         exactly?](#why-dont-results-match-exactly)
 
 <img
@@ -64,16 +64,16 @@ recreate them entirely in the time available.
 In the Excel spreadsheet, derived values related to long-term water
 quality trends are found in at least three Worksheets:
 
-  - “WQ 4 Coefficient absolute value”  
-  - “WQ 5 Trend chart”  
-  - “WQ Trend Chart for PP”
+-   “WQ 4 Coefficient absolute value”  
+-   “WQ 5 Trend chart”  
+-   “WQ Trend Chart for PP”
 
 In these worksheets, numerical values (similar up to sign, or rescaling
 by a factor of 100) are labeled in two different ways, and sometimes
 remain unlabeled. Labeled versions include:
 
-  - "Water Quality trend slope for comparison\*"  
-  - "Coefficient corrected for STD data\*"
+-   "Water Quality trend slope for comparison\*"  
+-   "Coefficient corrected for STD data\*"
 
 Unlabeled versions are found in the \* “WQ 4 Coefficient absolute value”
 worksheet, and include what appear to be (by comparison with values in
@@ -92,7 +92,7 @@ Quality trend slope for comparison*". 3. Multiply by 100 to produce
 The fact that PWD multiplied the resulting value by 100 suggests that
 they thought of the value as in some sense equivalent to a percentage.
 
-Values of correlation coefficients and their non-parametric cousin,
+Values of correlation coefficients and their nonparametric cousin,
 Kendall’s Tau, range from -1 to + 1. Multiplying by 100 generates a
 value between -100 and + 100, which is percentage-like.
 
@@ -100,9 +100,9 @@ value between -100 and + 100, which is percentage-like.
 
 The LakeLines paper mentions tend analysis based on the “Mann-Kendall”
 test. Mann-Kendall test has several other names, and is closely related
-to the Thiel- Sen estimator of slope. Crucially, it produces a test
+to the Theil- Sen estimator of slope. Crucially, it produces a test
 statistic, known as Kendall’s Tau, which ranges from -1 to +1, and is a
-nonparameteric equivalent to the standard (Pearson) correlation
+nonparametric equivalent to the standard (Pearson) correlation
 coefficient. Kendall’s Tau is widely used in environmental data analysis
 because it is insensitive to monotonic transformations, and is thus
 considered “nonparametric”.
@@ -119,9 +119,9 @@ same.)
 
 PWD papers refer to a number of analytic filters they used to decide
 what data to include in their analyses. We do not have access to their
-raw data, and thus can not duplicate all of their analytic choices. IN
-partiocular, they imposed various data completeness standards that we
-can not readily reconstruct.
+raw data, and thus can not duplicate all of their analytic choices. In
+particular, they imposed various data completeness standards that we can
+not readily reconstruct.
 
 Because we do not know exactly how data was prepared for the PWD
 analyses, we rely on annual water quality means data prepared by Maine
@@ -133,11 +133,16 @@ lakes
 
 ``` r
 library(tidyverse)
-#> -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-#> v ggplot2 3.3.2     v purrr   0.3.4
-#> v tibble  3.0.4     v dplyr   1.0.2
-#> v tidyr   1.1.2     v stringr 1.4.0
-#> v readr   1.4.0     v forcats 0.5.0
+#> Warning: package 'tidyverse' was built under R version 4.0.5
+#> -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+#> v ggplot2 3.3.5     v purrr   0.3.4
+#> v tibble  3.1.6     v dplyr   1.0.7
+#> v tidyr   1.1.4     v stringr 1.4.0
+#> v readr   2.1.0     v forcats 0.5.1
+#> Warning: package 'ggplot2' was built under R version 4.0.5
+#> Warning: package 'tidyr' was built under R version 4.0.5
+#> Warning: package 'dplyr' was built under R version 4.0.5
+#> Warning: package 'forcats' was built under R version 4.0.5
 #> -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
@@ -205,17 +210,14 @@ annual_data <- read_csv(fn) %>%
   select(MIDAS, Lake, Station, Year,
          contains('Mean'), Tphos_Ec, contains('Tsi')) %>%
   filter (MIDAS %in% pwd_data$MIDAS )
-#> 
+#> Rows: 1677 Columns: 29
 #> -- Column specification --------------------------------------------------------
-#> cols(
-#>   .default = col_double(),
-#>   Lake = col_character(),
-#>   Town = col_character(),
-#>   Min_Sec_Bottom = col_character(),
-#>   Mean_Sec_Bottom = col_character(),
-#>   Max_Sec_Bottom = col_character()
-#> )
-#> i Use `spec()` for the full column specifications.
+#> Delimiter: ","
+#> chr  (5): Lake, Town, Min_Sec_Bottom, Mean_Sec_Bottom, Max_Sec_Bottom
+#> dbl (24): MIDAS, Station, Year, Min_Sec, Mean_Sec, Max_Sec, Num_Months_Secch...
+#> 
+#> i Use `spec()` to retrieve the full column specification for this data.
+#> i Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
 
 # Looking at Kendall’s Tau
@@ -230,7 +232,6 @@ summary_data <- annual_data %>%
              across(c(Mean_Sec, Tsi_Sec, Mean_Chla, Tsi_Chl, Tphos_Ec, Tsi_Tpec ),
                     function(x) cor(Year, x, method = 'kendall', use = 'pairwise'))) %>%
   left_join(pwd_data[c(2,8)], by = 'MIDAS')
-#> `summarise()` ungrouping output (override with `.groups` argument)
 ```
 
 We check to see if our results correlate with the values reported by PWD
@@ -264,6 +265,7 @@ ggplot(summary_data, aes(The_Coef)) +
 ```
 
 <img src="Test_PWD_Trends_files/figure-gfm/unnamed-chunk-8-1.png" style="display: block; margin: auto;" />
+
 So the relationship between reported values and the ones we calculated,
 while showing a high correlation with TSI is not very close to 1:1. In
 general, magnitude of our estimates of Kendall’s Tau are about double
@@ -318,7 +320,6 @@ summary_data_2 <- annual_data %>%
                                     lm(Tsi_Chl ~ Year)$coef[2],
                                     NA_real_)) %>%
   left_join(pwd_data[c(2,8)], by = 'MIDAS')
-#> `summarise()` ungrouping output (override with `.groups` argument)
 ```
 
 ### Are Our Slopes Similar to PWD Data?
@@ -365,6 +366,7 @@ ggplot(summary_data_2, aes(The_Coef,TsiChl_Slope)) +
 ```
 
 <img src="Test_PWD_Trends_files/figure-gfm/unnamed-chunk-13-1.png" style="display: block; margin: auto;" />
+
 So for TSI, we see a high correlation, but a value mismatch. Our slopes
 are about five times higher than PWD reported, which suggests their
 regression was based not on TSI, but on raw observations,
@@ -390,7 +392,6 @@ summary_data_3 <- tmp %>%
   summarize (MIDAS = first(MIDAS),
              Years = sum(! is.na(Year)),
              Years_Chl = sum(! is.na(Mean_Chla)))
-#> `summarise()` ungrouping output (override with `.groups` argument)
 
 
 midas  <- summary_data_3$MIDAS
@@ -469,6 +470,7 @@ ggplot(summary_data_3, aes(The_Coef, tsi_TS)) +
 ```
 
 <img src="Test_PWD_Trends_files/figure-gfm/unnamed-chunk-17-1.png" style="display: block; margin: auto;" />
+
 Again, we see higher correlations coefficient, but a mismatch in slope
 for regression of the TSI values.
 
@@ -484,7 +486,7 @@ of rate of change of water quality per year, probably calculated with a
 Theil-Sen slope estimator ( or one of its variants) on raw Chlorophyll
 concentrations.
 
-(The Thiel-Sen estimators are closely related to the Mann-Kendall Test
+(The Theil-Sen estimators are closely related to the Mann-Kendall Test
 mentioned in the LakeLines publication).
 
 If this is correct, then
@@ -500,22 +502,25 @@ If this is correct, then
 ## Why don’t results match exactly?
 
 PWD worked with DEP to develop a data set of summer time data which is
-not available to us. IN prepating that data set, DEP and PWD apparently
+not available to us. In preparing that data set, DEP and PWD apparently
 applied a number of analytic choices, such as data filters, which we do
 not fully understand, and thus can not replicate. Instead, we worked
-with a different DEP data set that should be similar, but not idetical
+with a different DEP data set that should be similar, but not identical
 to the data they relied upon.
 
 Quoting from the Hunt et al. paper:
 
-> Samples must have been taken from open water. • There must have been
-> at least five months of data in a given year. • It is not permissible
-> to miss any two consecutive months in the period of record. • Water
-> samples must have been taken as cores (depth-integrated epilimnetic
-> samples). • There must be at least five years of data. • Only data
-> since 1995 were used, and there must have been at least one year of
-> data since 2008.few , and so we want to try to reproduce some of their
-> numbers, as a check on methods.
+> Samples must have been taken from open water.  
+> • There must have been at least five months of data in a given year.  
+> • It is not permissible to miss any two consecutive months in the
+> period of  
+> record.  
+> • Water samples must have been takenas cores (depth-integrated
+> epilimnetic samples).  
+> • There must be at least five years of data.  
+> • Only data since 1995 were used, and there must have been at least
+> one year of data since 2008.few , and so we want to try to reproduce
+> some of their numbers, as a check on methods.
 
-But other detals from the Hunt Paper do not appear to line up with the
+But other details from the Hunt Paper do not appear to line up with the
 Excel file we were sent, so there is some inconsistency.

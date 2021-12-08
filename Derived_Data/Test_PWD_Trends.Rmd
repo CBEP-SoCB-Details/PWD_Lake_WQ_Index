@@ -79,15 +79,15 @@ It appears the process was as follows
 The fact that PWD multiplied the resulting value by 100 suggests that
 they thought of the value as in some sense equivalent to a percentage.
 
-Values of correlation coefficients and their non-parametric cousin, Kendall's
+Values of correlation coefficients and their nonparametric cousin, Kendall's
 Tau, range from -1 to + 1.  Multiplying by 100 generates a value between -100
 and + 100, which is percentage-like.
 
 ## Kendall's Tau
 The LakeLines paper mentions tend analysis based on the "Mann-Kendall" test.
-Mann-Kendall test has several other names, and is closely related to the Thiel-
+Mann-Kendall test has several other names, and is closely related to the Theil-
 Sen estimator of slope. Crucially, it produces a test statistic, known as 
-Kendall's Tau, which ranges from -1 to +1, and is a nonparameteric equivalent
+Kendall's Tau, which ranges from -1 to +1, and is a nonparametric equivalent
 to the standard (Pearson) correlation coefficient.  Kendall's Tau is widely
 used in environmental data analysis because it is insensitive to monotonic
 transformations, and is thus considered "nonparametric".
@@ -102,15 +102,13 @@ and the test statistics -- known as Kendall's Tau -- are the same.)
 # Strategy
 PWD papers refer to a number of analytic filters they used to decide what data
 to include in their analyses.  We do not have access to their raw data, and thus
-can not duplicate all of their analytic choices.  IN partiocular, they imposed 
+can not duplicate all of their analytic choices.  In particular, they imposed 
 various data completeness standards that we can not readily reconstruct.
 
 Because we do not know exactly how data was prepared for the PWD analyses, we 
 rely on annual water quality means data prepared by Maine DEP as a rough
 comparison set to results from the PWD Excel spreadsheets.  We then calculate 
 Kendall's Tau on those data for the lakes 
-
-
 
 # Load Libraries
 ```{r}
@@ -123,7 +121,6 @@ library(mblm)
 library(CBEPgraphics)
 load_cbep_fonts()
 theme_set(theme_cbep())
-
 ```
 
 # Folder References
@@ -134,7 +131,6 @@ sibling <- file.path(parent,sibfldnm)
 
 dir.create(file.path(getwd(), 'figures'), showWarnings = FALSE)
 ```
-
 
 # Load PWD Water Quality Trend Data
 The final `regex`gsub` is to remove square bracketsand asterisks from the 
@@ -173,7 +169,6 @@ annual_data <- read_csv(fn) %>%
 
 ```
 
-
 # Looking at Kendall's Tau
 ```{r}
 summary_data <- annual_data %>%
@@ -186,12 +181,14 @@ summary_data <- annual_data %>%
                     function(x) cor(Year, x, method = 'kendall', use = 'pairwise'))) %>%
   left_join(pwd_data[c(2,8)], by = 'MIDAS')
 ```
+
 We  check to see if our results correlate with the values reported
 by PWD
 ```{r}
 round(cor(summary_data[10], summary_data[3:10],
           use = 'pairwise', method = 'pearson'),3)
 ```
+
 So, those are fairly unremarkable correlations, except for with Tsi_Chl. Reading 
 the paper, the trends were based on TSI values.  The Excel spreadsheet shows
 heavy reliance on chlorophyll data, filling in gaps with Secchi data where
@@ -208,6 +205,7 @@ ggplot(summary_data, aes(The_Coef)) +
   geom_text(aes(y = Tsi_Chl, label = MIDAS)) +
   geom_abline(intercept = 0, slope = 1, lty = 2)
 ```
+
 So the relationship between reported values and the ones we calculated, while
 showing a high correlation with TSI is not very close to 1:1.  In general,
 magnitude of our estimates of Kendall's Tau are about double the numbers
@@ -250,6 +248,7 @@ summary_data_2 <- annual_data %>%
                                     NA_real_)) %>%
   left_join(pwd_data[c(2,8)], by = 'MIDAS')
 ```
+
 ### Are Our Slopes Similar to PWD Data?
 ```{r}
 round(cor(summary_data_2[7:9],
@@ -278,6 +277,7 @@ ggplot(summary_data_2, aes(The_Coef,TsiChl_Slope)) +
   geom_abline(intercept = 0, slope = 1, lty = 2) +
   geom_smooth(method = 'lm', se = FALSE)
 ```
+
 So for TSI, we see a high correlation, but a value mismatch.  Our slopes are
 about five times higher than PWD reported, which suggests their regression was
 based not on TSI, but on raw observations,
@@ -342,6 +342,7 @@ round(cor(summary_data_3[5:7],
           use = 'pairwise',
           method = 'pearson'),3)
 ```
+
 These give a truly excellent correlation.  Our estimated slopes correlate with
 the results from PWD at over 90%, slightly higher than we got from the linear
 models.
@@ -363,6 +364,7 @@ ggplot(summary_data_3, aes(The_Coef, tsi_TS)) +
   geom_abline(intercept = 0, slope = 1, lty = 2) +
   geom_smooth(method = 'lm', se = FALSE)
 ```
+
 Again, we see higher correlations coefficient, but a mismatch in slope for 
 regression of the TSI values.
 
@@ -376,7 +378,7 @@ Spreadsheet most likely represent non-parametric slope estimates of rate of
 change of water quality per year, probably calculated with a Theil-Sen
 slope estimator ( or one of its variants) on raw Chlorophyll concentrations. 
 
-(The Thiel-Sen estimators are closely related to the Mann-Kendall Test
+(The Theil-Sen estimators are closely related to the Mann-Kendall Test
 mentioned in the LakeLines publication).
 
 If this is correct, then
@@ -391,31 +393,25 @@ If this is correct, then
 
 ## Why don't results match exactly?
 PWD worked with DEP to develop a data set of summer time data which is not
-available to us.  IN prepating that data set, DEP and PWD apparently applied a 
+available to us.  In preparing that data set, DEP and PWD apparently applied a 
 number of analytic choices, such as data filters, which we do not
 fully understand, and thus can not replicate.  Instead, we worked with a
-different DEP data set that should be similar, but not idetical to the data they
+different DEP data set that should be similar, but not identical to the data they
 relied upon.
 
 Quoting from the Hunt et al. paper:
 
 > Samples must have been taken from
-open water.
-• There must have been at least five
-months of data in a given year.
-• It is not permissible to miss any two
-consecutive months in the period of
-record.
-• Water samples must have been taken
-as cores (depth-integrated epilimnetic
-samples).
-• There must be at least five years of data.
-• Only data since 1995 were used, and
-there must have been at least one year
-of data since 2008.few , and so we want
-to try to reproduce some of their numbers, as a check on methods.
+open water.  
+• There must have been at least five months of data in a given year.  
+• It is not permissible to miss any two consecutive months in the period of  
+  record.  
+• Water samples must have been takenas cores (depth-integrated epilimnetic
+  samples).  
+• There must be at least five years of data.  
+• Only data since 1995 were used, and  there must have been at least one year
+  of data since 2008.few , and so we want to try to reproduce some of their 
+  numbers, as a check on methods.
 
-But other detals from the Hunt Paper do not appear to line up with the Excel
+But other details from the Hunt Paper do not appear to line up with the Excel
 file we were sent, so there is some inconsistency.
-
-
